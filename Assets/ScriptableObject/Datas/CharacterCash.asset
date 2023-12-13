@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787ee43800b1d4d509b0f9a2dca6ce92, type: 3}
   m_Name: CharacterCash
   m_EditorClassIdentifier: 
-  TotalMoney: 0
+  Deposit1: 10000
+  Deposit2: 30000
+  Deposit3: 50000
+  Withdraw1: -10000
+  Withdraw2: -30000
+  Withdraw3: -50000
