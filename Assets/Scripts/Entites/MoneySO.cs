@@ -6,6 +6,13 @@ using UnityEngine;
 
 public class MoneySO : ScriptableObject
 {
-    [Header("BaseMoney")]
-    public int TotalMoney;
+    [Header("Deposit")]
+    public int Deposit1;
+    public int Deposit2;
+    public int Deposit3;
+
+    [Header("Withdraw")]
+    public int Withdraw1;
+    public int Withdraw2;
+    public int Withdraw3;
 }

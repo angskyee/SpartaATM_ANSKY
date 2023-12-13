@@ -8,107 +8,132 @@ using UnityEngine.Events;
 
 public class ATMSystem : MonoBehaviour
 {
-    public InputField inputFieldDeposit;
-    public InputField inputFieldWithdraw;
+    public Text CashTxt;
+    public Text CardTxt;
 
-    //public Button DepositBtn;
-    //public Button DepositBtn10000;
-    //public Button DepositBtn30000;
-    //public Button DepositBtn50000;
-    //public Button WithdrawBtn;
-    //public Button WithdrawBtn10000;
-    //public Button WithdrawBtn30000;
-    //public Button WithdrawBtn50000;
+    protected CharacterMoneyHandler _handler;
+    private SceneHandler _sceneHandler;
 
-    private CustomerMoneysController customerMoneysController;
+    //public event Action OnButtonClick;
 
-    //private void Start()
-    //{
-    //    DepositBtn.onClick.AddListener(OnInputFieldDepositButtonClick);
-    //    DepositBtn10000.onClick.AddListener(() => OnButtonClick(10000));
-    //    DepositBtn30000.onClick.AddListener(() => OnButtonClick(30000));
-    //    DepositBtn50000.onClick.AddListener(() => OnButtonClick(50000));
-    //    WithdrawBtn.onClick.AddListener(OnInputFieldWithdrawButtonClick);
-    //    WithdrawBtn10000.onClick.AddListener(() => OnButtonClick(-10000));
-    //    WithdrawBtn30000.onClick.AddListener(() => OnButtonClick(-30000));
-    //    WithdrawBtn50000.onClick.AddListener(() => OnButtonClick(-50000));
-    //}
+    public int CurrentCash { get; private set; }
+    public int CurrentCard { get; private set; }
+
+    public int BasicCash => _handler.BasicMoney.moneyInCash;
+    public int BasicCard => _handler.BasicMoney.moneyInCard;
 
     private void Awake()
     {
-        customerMoneysController = new CustomerMoneysController();
+        _handler = GetComponent<CharacterMoneyHandler>();
+        _sceneHandler = GetComponentInChildren<SceneHandler>();
     }
 
-    public void Deposit10000Btn()
+    private void Start()
     {
-        OnButtonClick(10000);
+        CurrentCard = _handler.BasicMoney.moneyInCard;
+        CurrentCash = _handler.BasicMoney.moneyInCash;
     }
 
-    public void Deposit30000Btn()
+    private void Update()
     {
-        OnButtonClick(30000);
+        CashTxt.text = MoneyToString(CurrentCash);
+        CardTxt.text = MoneyToString(CurrentCard);
     }
 
-    public void Deposit50000Btn()
+    private string MoneyToString(int value)
     {
-        OnButtonClick(50000);
+        return value.ToString("N0");
     }
 
-    public void DepositInputBtn()
+    public bool ChangeMoney(int change)
     {
-        OnInputFieldDepositButtonClick();
-    }
-
-    public void Withdraw10000Btn()
-    {
-        OnButtonClick(10000);
-    }
-
-    public void Withdraw30000Btn()
-    {
-        OnButtonClick(30000);
-    }
-
-    public void Withdraw50000Btn()
-    {
-        OnButtonClick(50000);
-    }
-
-    public void WithdrawInputBtn()
-    {
-        OnInputFieldWithdrawButtonClick();
-    }
-
-    private void OnButtonClick(int value)
-    {
-        customerMoneysController.ChangeMoney(value);
-    }
-
-    private void OnInputFieldDepositButtonClick()
-    {
-        string inputvalue = inputFieldDeposit.text;
-
-        if (int.TryParse(inputvalue, out int intValue))
+        if(change > 0 && change > CurrentCash)
         {
-            customerMoneysController.ChangeMoney(intValue);
+            change = 0;
+        }
+
+        if(change < 0 && change > CurrentCard)
+        {
+            change = 0;
+        }
+
+        if (change == 0)
+        {
+            CallWarning();
+            return false;
         }
         else
         {
-            customerMoneysController.CallWarning();
+            CurrentCard += change;
+            CurrentCash -= change;
         }
+
+        return true;
     }
 
-    private void OnInputFieldWithdrawButtonClick()
+    public void CallWarning()
     {
-        string inputvalue = inputFieldWithdraw.text;
-
-        if (int.TryParse(inputvalue, out int intValue))
-        {
-            customerMoneysController.ChangeMoney(-intValue);
-        }
-        else
-        {
-            customerMoneysController.CallWarning();
-        }
+        _sceneHandler.ArrorScene();
     }
+
+    //public void CallButtonClick()
+    //{
+    //    OnButtonClick?.Invoke();
+    //}
+
+
+
+
+    //public void DepositFirstBtn()
+    //{
+    //    OnButtonClick(_handler.BasicMoney.moneySO.Deposit1);
+    //}
+
+    //public void DepositSecondBtn()
+    //{
+    //    OnButtonClick(_handler.BasicMoney.moneySO.Deposit2);
+    //}
+
+    //public void DepositThirdBtn()
+    //{
+    //    OnButtonClick(_handler.BasicMoney.moneySO.Deposit3);
+    //}
+
+    //public void DepositInputBtn()
+    //{
+    //    OnInputFieldDepositButtonClick();
+    //}
+
+    //private void OnButtonClick(int value)
+    //{
+    //    customerMoneysController.ChangeMoney(value);
+    //}
+
+    //private void OnInputFieldDepositButtonClick()
+    //{
+    //    string inputvalue = inputFieldDeposit.text;
+
+    //    if (int.TryParse(inputvalue, out int intValue))
+    //    {
+    //        customerMoneysController.ChangeMoney(intValue);
+    //    }
+    //    else
+    //    {
+    //        customerMoneysController.CallWarning();
+    //    }
+    //}
+
+    //private void OnInputFieldWithdrawButtonClick()
+    //{
+    //    string inputvalue = inputFieldWithdraw.text;
+
+    //    if (int.TryParse(inputvalue, out int intValue))
+    //    {
+    //        customerMoneysController.ChangeMoney(-intValue);
+    //    }
+    //    else
+    //    {
+    //        customerMoneysController.CallWarning();
+    //    }
+    //}
 }

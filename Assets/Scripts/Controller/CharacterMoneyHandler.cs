@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterMoneyHandler : MonoBehaviour
 {
     [SerializeField] private CharacterMoneys baseMoney;
-    public CharacterMoneys CurrentMoney { get; private set; }
+    public CharacterMoneys BasicMoney { get; private set; }
     public List<CharacterMoneys> moneysModifiers = new List<CharacterMoneys>();
 
     private void Awake()
@@ -22,9 +22,9 @@ public class CharacterMoneyHandler : MonoBehaviour
             moneySO = Instantiate(baseMoney.moneySO);
         }
 
-        CurrentMoney = new CharacterMoneys { moneySO = moneySO };
-        CurrentMoney.MoneyChangeType = baseMoney.MoneyChangeType;
-        CurrentMoney.moneyInCard = baseMoney.moneyInCard;
-        CurrentMoney.moneyInCash = baseMoney.moneyInCash;
+        BasicMoney = new CharacterMoneys { moneySO = moneySO };
+        BasicMoney.MoneyChangeType = baseMoney.MoneyChangeType;
+        BasicMoney.moneyInCard = baseMoney.moneyInCard;
+        BasicMoney.moneyInCash = baseMoney.moneyInCash;
     }
 }

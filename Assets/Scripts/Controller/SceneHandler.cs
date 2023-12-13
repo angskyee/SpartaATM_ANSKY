@@ -7,6 +7,7 @@ public class SceneHandler : MonoBehaviour
     public GameObject mainMenu;
     public GameObject depositMenu;
     public GameObject withdrawMenu;
+    public GameObject arror;
 
     public void SetMainMenu()
     {
@@ -38,5 +39,28 @@ public class SceneHandler : MonoBehaviour
             mainMenu.SetActive(false);
             withdrawMenu.SetActive(true);
         }
+    }
+
+    public void ReturnMainScene()
+    {
+        mainMenu.SetActive(true);
+        if (depositMenu.activeSelf)
+        {
+            depositMenu.SetActive(false);
+        }
+        else if (withdrawMenu.activeSelf)
+        {
+            withdrawMenu.SetActive(false);
+        }
+    }
+
+    public void ArrorScene()
+    {
+        arror.SetActive(true);
+    }
+
+    public void ExitArrorScene()
+    {
+        arror.SetActive(false);
     }
 }

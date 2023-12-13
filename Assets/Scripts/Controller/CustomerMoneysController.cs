@@ -6,77 +6,147 @@ using UnityEngine.UI;
 
 public class CustomerMoneysController : MonoBehaviour
 {
-    public Text CashTxt;
-    public Text CardTxt;
-    private CharacterMoneyHandler _money;
-    protected int currentCash;
-    protected int currentCard;
 
-    private void Awake()
-    {
-        _money = GetComponent<CharacterMoneyHandler>();
-    }
+    public InputField inputFieldDeposit;
+    public InputField inputFieldWithdraw;
+
+    private ATMSystem aTMSystem;
+    private CharacterMoneyHandler _handler;
 
     private void Start()
     {
-        GetMoney(ref currentCash, ref currentCard);
+        aTMSystem = transform.GetComponentInParent<ATMSystem>();
+        _handler = transform.GetComponentInParent<CharacterMoneyHandler>();
     }
 
-    private string MoneyToString(int value)
+    public void OnFirstDepositButtonClick()
     {
-        return value.ToString("N0");
+        aTMSystem.ChangeMoney(_handler.BasicMoney.moneySO.Deposit1);
     }
 
-    private void GetMoney(ref int cashValue, ref int cardValue)
+    public void OnSecondDepositButtonClick()
     {
-        cashValue = _money.CurrentMoney.moneyInCash;
-        cardValue = _money.CurrentMoney.moneyInCard;
+        aTMSystem.ChangeMoney(_handler.BasicMoney.moneySO.Deposit2);
     }
 
-    private void Update()
+    public void OnThirdDepositButtonClick()
     {
-        CashTxt.text = MoneyToString(currentCash);
-        CardTxt.text = MoneyToString(currentCard);
+        aTMSystem.ChangeMoney(_handler.BasicMoney.moneySO.Deposit3);
     }
 
-    public bool ChangeMoney(int change)
+    public void OnFreeDepositButtonClick()
     {
-        int cash = currentCash;
-        int card = currentCard;
+        aTMSystem.ChangeMoney(InputDepositMoney());
+    }
 
-        if (change == 0 || cash < 0 || card < 0)
+    public int InputDepositMoney()
+    {
+        string inputDepositText = inputFieldDeposit.text;
+
+        if(int.TryParse(inputDepositText, out int moneyValue))
         {
-            CallWarning();
-            return false;
-        }
-
-        if (change > 0)
-        {
-            Debug.Log(cash);
-            Debug.Log(change);
-            card += change;
-            cash -= change;
-
+            return moneyValue;
         }
         else
         {
-            card -= change;
-            cash += change;
+            return 0;
         }
-
-        UpdeteMoney(card, cash);
-
-        return true;
     }
 
-    private void UpdeteMoney(int card, int cash)
+    public void OnFirstWithdrawButtonClick()
     {
-        currentCard = card;
-        currentCash = cash;
+        aTMSystem.ChangeMoney(_handler.BasicMoney.moneySO.Withdraw1);
     }
 
-    public void CallWarning()
+    public void OnSecondWithdrawButtonClick()
     {
-        Debug.Log(currentCash + currentCard);
+        aTMSystem.ChangeMoney(_handler.BasicMoney.moneySO.Withdraw2);
     }
+
+    public void OnThirdWithdrawButtonClick()
+    {
+        aTMSystem.ChangeMoney(_handler.BasicMoney.moneySO.Withdraw3);
+    }
+
+    public void OnFreeWithdrawButtonClick()
+    {
+        aTMSystem.ChangeMoney(InputWithdrawMoney());
+    }
+
+    public int InputWithdrawMoney()
+    {
+        string inputWithdrawText = inputFieldWithdraw.text;
+
+        if (int.TryParse(inputWithdrawText, out int moneyValue))
+        {
+            return -moneyValue;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    //public Text CashTxt;
+    //public Text CardTxt;
+    //private CharacterMoneyHandler _money;
+
+    //public int CurrentCash { get; private set; }
+    //public int CurrentCard { get; private set; }
+
+    //public int BasicCash => _money.BasicMoney.moneyInCash;
+    //public int BasicCard => _money.BasicMoney.moneyInCard;
+
+    //private void Awake()
+    //{
+    //    _money = GetComponent<CharacterMoneyHandler>();
+    //}
+
+    //private void Start()
+    //{
+    //    CurrentCard = _money.BasicMoney.moneyInCard;
+    //    CurrentCash = _money.BasicMoney.moneyInCash;
+    //}
+
+    //private string MoneyToString(int value)
+    //{
+    //    return value.ToString("N0");
+    //}
+
+    //private void Update()
+    //{
+    //    CashTxt.text = MoneyToString(CurrentCash);
+    //    CardTxt.text = MoneyToString(CurrentCard);
+    //}
+
+    //public bool ChangeMoney(int change)
+    //{
+
+    //    if (change == 0)
+    //    {
+    //        CallWarning();
+    //        return false;
+    //    }
+
+    //    if (change > 0)
+    //    {
+    //        Debug.Log(CurrentCash);
+    //        Debug.Log(change);
+    //        CurrentCard += change;
+    //        CurrentCash -= change;
+
+    //    }
+    //    else
+    //    {
+    //        CurrentCard -= change;
+    //        CurrentCash += change;
+    //    }
+
+    //    return true;
+    //}
+
+    //public void CallWarning()
+    //{
+    //    Debug.Log(CurrentCash + CurrentCard);
+    //}
 }
