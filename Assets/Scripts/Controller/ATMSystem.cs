@@ -25,7 +25,7 @@ public class ATMSystem : MonoBehaviour
     private void Awake()
     {
         _handler = GetComponent<CharacterMoneyHandler>();
-        _sceneHandler = GetComponentInChildren<SceneHandler>();
+        _sceneHandler = GetComponent<SceneHandler>();
     }
 
     private void Start()
